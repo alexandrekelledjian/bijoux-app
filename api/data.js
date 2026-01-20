@@ -1,7 +1,11 @@
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
+
+const redis = new Redis({
+  url: process.env.KV_REST_API_URL,
+  token: process.env.KV_REST_API_TOKEN,
+});
 
 export default async function handler(req, res) {
-  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -12,15 +16,13 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
-      // Lire les données
-      const data = await kv.get('bijoux_data');
+      const data = await redis.get('bijoux_data');
       return res.status(200).json(data || { salons: [], responses: {} });
     }
 
     if (req.method === 'POST') {
-      // Sauvegarder les données
       const data = req.body;
-      await kv.set('bijoux_data', data);
+      await redis.set('bijoux_data', data);
       return res.status(200).json({ success: true });
     }
 
