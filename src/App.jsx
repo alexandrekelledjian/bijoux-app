@@ -120,7 +120,8 @@ function SalonForm({ salon, existingData, onSave, onCancel }) {
     ratio: existingData?.ratio || '',
     rotation: existingData?.rotation || '',
     prenom: existingData?.prenom || '',
-    telephone: existingData?.telephone || ''
+    telephone: existingData?.telephone || '',
+    dateNaissance: existingData?.dateNaissance || ''
   })
 
   const isComplete = formData.taille && formData.couleurs && formData.ratio && formData.rotation
@@ -246,6 +247,16 @@ function SalonForm({ salon, existingData, onSave, onCancel }) {
             onChange={(e) => setFormData(prev => ({ ...prev, telephone: e.target.value }))}
           />
         </div>
+
+        <div className="form-section">
+          <label className="form-label">Date de naissance</label>
+          <input
+            type="date"
+            className="text-input"
+            value={formData.dateNaissance}
+            onChange={(e) => setFormData(prev => ({ ...prev, dateNaissance: e.target.value }))}
+          />
+        </div>
       </div>
 
       <div className="form-actions">
@@ -368,6 +379,7 @@ function App() {
         'Rotation (jours)': resp.rotation || '',
         'Prénom gérante': resp.prenom || '',
         'Téléphone': resp.telephone || '',
+        'Date de naissance': resp.dateNaissance || '',
         'Statut': resp.completed ? 'Complété' : 'En attente',
         'Date complétion': resp.completedAt ? new Date(resp.completedAt).toLocaleDateString('fr-FR') : ''
       }
